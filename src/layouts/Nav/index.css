@@ -1,0 +1,33 @@
+.vertical-navbar {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100vh;
+    background-color: #427ba3;
+    padding: 20px;
+    margin-top: -45px;
+    padding-top: 145px;
+    box-shadow: 2px 0 5px rgba(234, 155, 18, 0.1);
+}
+
+.vertical-navbar a {
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 15px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+    font-family:'Poppins'
+}
+
+.vertical-navbar a:hover {
+    background-color: #575757;
+}
+
+.vertical-navbar .active-link {
+    background-color: #04AA6D;
+}
+
+body{
+    /* overflow: hidden; */
+}
