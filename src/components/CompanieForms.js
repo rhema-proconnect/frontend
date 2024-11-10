@@ -15,13 +15,6 @@ import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from "use-places-autocomplete";
-import {
-    Combobox,
-    ComboboxInput,
-    ComboboxPopover,
-    ComboboxList,
-    ComboboxOption,
-} from "@reach/combobox";
 import {  InstagramOutlined, FacebookOutlined, TwitterOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -178,23 +171,7 @@ export const LastStep = ({ data, setData, prevStep, submitForm}) => {
                     />
                 </Form.Item>
                 <Form.Item label="Map">
-                {/* <Combobox onSelect={handleSelect}>
-                    <ComboboxInput
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        disabled={!ready}
-                        className="combobox-input"
-                        placeholder="Search an address"
-                    />
-                    <ComboboxPopover>
-                        <ComboboxList>
-                        {status === "OK" &&
-                            datas.map(({ place_id, description }) => (
-                            <ComboboxOption key={place_id} value={description} />
-                            ))}
-                        </ComboboxList>
-                    </ComboboxPopover>
-                </Combobox> */}
+                
                     <Input
                         // prefix={<HeatMapOutlined />}
                         onChange={(e) => setData({ ...data, mapp: e.target.value })}
