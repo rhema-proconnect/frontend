@@ -20,9 +20,9 @@ variables:
 
 # Utilisation d'un agent auto-hébergé pour cohérence
 pool:
-  name: 'Default' # Remplacez par le nom de votre pool d'agents
+  name: 'Default' # Assurez-vous que c'est le pool dans lequel l'agent est enregistré
   demands:
-    - Agent.Name -equals Agentselfhosted # Assurez-vous que l'agent correspond à vos exigences
+    - Agent.Name -equals EasyProTest  # Remplacez "EasyProTest" par le nom réel de l'agent
 
 stages:
 - stage: Build
