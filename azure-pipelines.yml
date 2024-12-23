@@ -1,0 +1,30 @@
+# Azure DevOps Pipeline for a Node.js project using React
+# This pipeline installs Node.js, builds the project, and publishes build artifacts.
+# Documentation: https://learn.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main  # Pipeline triggers on pushes to the "main" branch
+
+pool:
+  vmImage: ubuntu-latest  # Use the latest Ubuntu image as the build environment
+
+steps:
+# Step 1: Install Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'  # Specify the Node.js version
+  displayName: 'Install Node.js'
+
+# Step 2: Install dependencies and build the project
+- script: |
+    npm ci  # Clean install dependencies
+    npm run build  # Run the build script defined in package.json
+  displayName: 'Install dependencies and build project'
+
+# Step 3: Publish build artifacts
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'build'  # Path to the build directory
+    artifactName: 'drop'  # Name of the published artifact
+    publishLocation: 'Container'
+  displayName: 'Publish build artifacts'
