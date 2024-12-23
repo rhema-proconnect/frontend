@@ -5,29 +5,82 @@
 trigger:
 - main
 
-# Utilisation d'un agent auto-hébergé
+variables:
+  # Azure Resource Manager connection
+  azureSubscription: '67067b42-47d0-49d9-80ef-0c5c5ce1bf89'
+
+  # Web app name
+  webAppName: 'EASYPROCONNECT-DEMO'
+
+  # Environment name
+  environmentName: 'EASYPROCONNECT-DEMO'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+# Utilisation d'un agent auto-hébergé pour cohérence
 pool:
   name: 'Default' # Remplacez par le nom de votre pool d'agents
   demands:
     - Agent.Name -equals Agentselfhosted # Assurez-vous que l'agent correspond à vos exigences
 
-steps:
-# Étape 1 : Installez Node.js
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build Job
+    steps:
+    # Étape 1 : Installez Node.js
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: 'Install Node.js'
 
-# Étape 2 : Installation des dépendances et création du build
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    # Étape 2 : Installation des dépendances, création et test
+    - script: |
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+      displayName: 'npm install, build and test'
 
-# Étape 3 (optionnelle) : Publiez les artefacts de construction
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'build' # Remplacez par le chemin de votre dossier de sortie
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-  displayName: 'Publish Build Artifacts'
+    # Étape 3 : Archivage des fichiers de build
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    # Étape 4 : Publication des artefacts de build
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      displayName: 'Publish Build Artifacts'
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy Job
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # Étape 5 : Déploiement sur Azure Web App
+          - task: AzureWebApp@1
+            displayName: 'Azure Web App Deploy: EASYPROCONNECT-DEMO'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appType: webAppLinux
+              appName: $(webAppName)
+              runtimeStack: 'NODE|20LTS'
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+              startUpCommand: 'npm run start'
