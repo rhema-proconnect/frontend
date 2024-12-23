@@ -3,28 +3,31 @@
 # Documentation: https://learn.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main  # Pipeline triggers on pushes to the "main" branch
+- main
 
+# Utilisation d'un agent auto-hébergé
 pool:
-  vmImage: ubuntu-latest  # Use the latest Ubuntu image as the build environment
+  name: 'Default' # Remplacez par le nom de votre pool d'agents
+  demands:
+    - Agent.Name -equals Agentselfhosted # Assurez-vous que l'agent correspond à vos exigences
 
 steps:
-# Step 1: Install Node.js
+# Étape 1 : Installez Node.js
 - task: NodeTool@0
   inputs:
-    versionSpec: '20.x'  # Specify the Node.js version
+    versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-# Step 2: Install dependencies and build the project
+# Étape 2 : Installation des dépendances et création du build
 - script: |
-    npm ci  # Clean install dependencies
-    npm run build  # Run the build script defined in package.json
-  displayName: 'Install dependencies and build project'
+    npm install
+    npm run build
+  displayName: 'npm install and build'
 
-# Step 3: Publish build artifacts
+# Étape 3 (optionnelle) : Publiez les artefacts de construction
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: 'build'  # Path to the build directory
-    artifactName: 'drop'  # Name of the published artifact
+    PathtoPublish: 'build' # Remplacez par le chemin de votre dossier de sortie
+    ArtifactName: 'drop'
     publishLocation: 'Container'
-  displayName: 'Publish build artifacts'
+  displayName: 'Publish Build Artifacts'
