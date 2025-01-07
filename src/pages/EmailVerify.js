@@ -13,7 +13,7 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `http://localhost:8080/api/users/verify`;
+				const url = `https://back-myqz.vercel.app/api/users/verify`;
 				const { data } = await axios.post(url, {id: param.id, token: param.token});
 				console.log(data);
 				setValidUrl(true);
