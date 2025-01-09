@@ -62,7 +62,7 @@ const Detail = () => {
           marginLeft: "190px"
         }}
       >
-        <img style={{width: 150, height: 150, fontSize: 25}} src={pagData.image ? `http://localhost:8080/${pagData.image}` : Icon}/>
+        <img style={{width: 150, height: 150, fontSize: 25}} src={pagData.image ? `https://back-myqz.vercel.app/${pagData.image}` : Icon}/>
         
         <Box style={{float: "right", marginRight: 450}}>
           <Typography sx={{fontFamily:'Poppins, sans-serif'}}>
