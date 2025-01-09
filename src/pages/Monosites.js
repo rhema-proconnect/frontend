@@ -67,7 +67,7 @@ const Monosites = () => {
                     <Link to={`/detail/${data._id}`}>
                     <Card
                         key={data.id}
-                        imageSrc={data.image ? `http://localhost:8080/${data.image}` : Icon}
+                        imageSrc={data.image ? `https://back-myqz.vercel.app/${data.image}` : Icon}
                         title={data.name}
                         cat={data.cat}
                         phone={data.phoneNumber}
