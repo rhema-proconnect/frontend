@@ -103,7 +103,7 @@ const Detail = () => {
                 cover={
                   <img
                     alt="example"
-                    src={data.image ? `http://localhost:8080/${data.image}` : Icon}
+                    src={data.image ? `https://back-myqz.vercel.app/${data.image}` : Icon}
                   />
                 }
                 actions={[
