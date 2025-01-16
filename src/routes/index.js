@@ -45,6 +45,8 @@ import ForgotPass from '../pages/ForgotPass';
 import ResetPass from '../pages/ResetPass';
 import StudentMono from '../pages/support/StudentMono';
 import DetailSdtM from '../pages/support/DetailSdtM';
+import ConfirmEmail from '../pages/ConfirmEmail';
+
 
 const AUTH = 'auth';
 const DASH ='dash';
@@ -72,6 +74,8 @@ export default function Routes() {
         {path:"/users/:id/verify/:token", element:<EmailVerify />},
         {path:"/forgotpass", element:<ForgotPass />},
         {path:"/reset-password/:token", element:<ResetPass />},
+        {path:"/confirmEmail", element:<ConfirmEmail />},
+
         
         {path:"/dash", element:(<Guard><Board /> </Guard>)},
         {path:"/addPage/:id", element:(<Guard><NavBar /><AddPage /></Guard>)},
