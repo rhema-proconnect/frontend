@@ -1,6 +1,9 @@
 import {
   registrationStart,
   registrationEnd,
+  confirmEmailStart,
+  confirmEmailEnd,
+  confirmOtpStart,
   loginStart,
   loginFailure,
   loginSuccess,
@@ -120,6 +123,36 @@ export const register = async (
   }
   dispatch(registrationEnd());
 };
+
+export const confirmEmailService = async ({email, verificationCode}, dispatch) =>{
+  dispatch(confirmEmailStart());
+  try {
+    const res = await axios.post('https://back-myqz.vercel.app/api/verify-email', { email, verificationCode });
+    const  message  = res.data.message;
+    // const user = res.data.data
+    // sessionStorage.setItem("token", user);
+    // console.log(user)
+    dispatch(
+      openAlert({
+        message,
+        severity: "success",
+        duration: 500,
+        nextRoute: "/login",
+      })
+    );
+    // return user
+  } catch (error) {
+    dispatch(confirmEmailEnd());
+    dispatch(
+      openAlert({
+        message: error?.response?.data?.errMessage
+          ? error.response.data.errMessage
+          : error.message,
+        severity: "error",
+      })
+    );
+  }
+}
 
 export const login = async ({ email, password }, dispatch) => {
   dispatch(loginStart());
