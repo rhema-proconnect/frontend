@@ -3,7 +3,7 @@ import {
   registrationEnd,
   confirmEmailStart,
   confirmEmailEnd,
-  confirmOtpStart,
+  // confirmOtpStart,
   loginStart,
   loginFailure,
   loginSuccess,
@@ -17,6 +17,7 @@ import { openAlert } from "../feature/alertSlice";
 import setBearer from "../utils/setBearer";
 import axiosInstance from "./axiosInstance";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 export const registerUser = (userData) => {
   return axiosInstance.post("/register", userData);
@@ -105,7 +106,7 @@ export const register = async (
         openAlert({
           message: res.data.message,
           severity: "success",
-          nextRoute: "/login",
+          nextRoute: "/confirmEmail",
           duration: 1500,
         })
       );
@@ -127,7 +128,7 @@ export const register = async (
 export const confirmEmailService = async ({email, verificationCode}, dispatch) =>{
   dispatch(confirmEmailStart());
   try {
-    const res = await axios.post('https://back-myqz.vercel.app/api/verify-email', { email, verificationCode });
+    const res = await axiosInstance.post('/users/verify-email', { email, verificationCode });
     const  message  = res.data.message;
     // const user = res.data.data
     // sessionStorage.setItem("token", user);
