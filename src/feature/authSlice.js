@@ -72,6 +72,8 @@ export const authSlice = createSlice({
 export const {
     registrationStart,
     registrationEnd,
+    confirmEmailStart,
+    confirmEmailEnd,
     loginStart,
     loginFailure,
     loginSuccess,
